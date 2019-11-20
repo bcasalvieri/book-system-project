@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/book-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/book-system-config-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/book-system-service-registry" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/note-servive" charset="UTF-8" />
   </component>
 </project>

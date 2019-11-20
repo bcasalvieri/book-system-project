@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/book-system-config-server/book-system-config-server.iml" filepath="$PROJECT_DIR$/book-system-config-server/book-system-config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/book-system-project.iml" filepath="$PROJECT_DIR$/.idea/book-system-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/book-system-service-registry/book-system-service-registry.iml" filepath="$PROJECT_DIR$/book-system-service-registry/book-system-service-registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/note-servive/note-servive.iml" filepath="$PROJECT_DIR$/note-servive/note-servive.iml" />
     </modules>
   </component>
 </project>
