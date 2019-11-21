@@ -2,6 +2,7 @@ package com.company.bookservice.controller;
 
 import com.company.bookservice.model.BookViewModel;
 import com.company.bookservice.service.BookServiceLayer;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

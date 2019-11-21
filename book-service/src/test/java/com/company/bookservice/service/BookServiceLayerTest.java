@@ -3,8 +3,11 @@ package com.company.bookservice.service;
 import com.company.bookservice.dao.BookRepository;
 import com.company.bookservice.model.Book;
 import com.company.bookservice.model.BookViewModel;
+import com.company.bookservice.model.Note;
+import com.company.bookservice.util.feign.NoteClient;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +20,14 @@ public class BookServiceLayerTest {
 
     private BookRepository bookRepo;
     private BookServiceLayer service;
+    @Autowired
+    private NoteClient client;
 
     @Before
     public void setUp() throws Exception {
         setUpBookRepoMock();
-        service = new BookServiceLayer(bookRepo);
+        setUpNoteClientMock();
+        service = new BookServiceLayer(bookRepo, client);
     }
 
     @Test
@@ -31,8 +37,9 @@ public class BookServiceLayerTest {
         book.setAuthor("J.K. Rowling");
 
         book = service.createBook(book);
+
         BookViewModel fromService = service.getBook(book.getId());
-        assertEquals(book, fromService);
+        assertEquals(book.toString(), fromService.toString());
     }
 
     @Test
@@ -41,6 +48,10 @@ public class BookServiceLayerTest {
         book.setTitle("Harry Potter and the Sorcerer's Stone");
         book.setAuthor("J.K. Rowling");
         book = service.createBook(book);
+
+        List<String> noteList = new ArrayList<>();
+        noteList.add("New note.");
+        book.setNotesList(noteList);
 
         List<BookViewModel> books = new ArrayList<>();
         books.add(book);
@@ -67,5 +78,19 @@ public class BookServiceLayerTest {
         doReturn(book).when(bookRepo).save(book1);
         doReturn(book).when(bookRepo).findById(1);
         doReturn(books).when(bookRepo).findAll();
+    }
+
+    private void setUpNoteClientMock() {
+        client = mock(NoteClient.class);
+
+        Note note = new Note();
+        note.setId(1);
+        note.setBookId(2);
+        note.setNote("New note.");
+
+        List<Note> noteList = new ArrayList<>();
+        noteList.add(note);
+
+        doReturn(noteList).when(client).getNotesByBookId(2);
     }
 }
