@@ -13,7 +13,7 @@ public class BookViewModel {
     @NotEmpty(message = "Please enter an author.")
     @Size(max = 50, message = "Author cannot be more than 50 characters.")
     private String author;
-    private List<String> notesList;
+    private List<Note> notesList;
 
     public int getId() {
         return id;
@@ -39,11 +39,11 @@ public class BookViewModel {
         this.author = author;
     }
 
-    public List<String> getNotesList() {
+    public List<Note> getNotesList() {
         return notesList;
     }
 
-    public void setNotesList(List<String> notesList) {
+    public void setNotesList(List<Note> notesList) {
         this.notesList = notesList;
     }
 

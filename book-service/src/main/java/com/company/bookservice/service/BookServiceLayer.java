@@ -8,10 +8,7 @@ import com.company.bookservice.util.feign.NoteClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,12 +45,7 @@ public class BookServiceLayer {
         if (book == null) return null;
         else {
             BookViewModel bvm = buildBookViewModel(book);
-            List<Note> notesList = client.getNotesByBookId(id);
-            List<String> notes = new ArrayList<>();
-            for (Note note : notesList) {
-                notes.add(note.getNote());
-            }
-            bvm.setNotesList(notes);
+            bvm.setNotesList(client.getNotesByBookId(id));
             return bvm;
         }
     }
@@ -63,14 +55,7 @@ public class BookServiceLayer {
                 .map(this::buildBookViewModel)
                 .collect(Collectors.toList());
 
-        books.forEach(bookViewModel -> {
-            List<Note> notesList = client.getNotesByBookId(bookViewModel.getId());
-            List<String> notes = new ArrayList<>();
-            for (Note note : notesList) {
-                notes.add(note.getNote());
-            }
-            bookViewModel.setNotesList(notes);
-        });
+        books.forEach(bookViewModel -> bookViewModel.setNotesList(client.getNotesByBookId(bookViewModel.getId())));
 
         return books;
     }
@@ -84,6 +69,7 @@ public class BookServiceLayer {
     }
 
     public void deleteBook(int id) {
+        client.getNotesByBookId(id).forEach(note -> client.deleteNote(note.getId()));
         bookRepo.deleteById(id);
     }
 
