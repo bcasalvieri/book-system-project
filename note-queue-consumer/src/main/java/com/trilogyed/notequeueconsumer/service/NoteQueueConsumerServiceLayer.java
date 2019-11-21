@@ -15,13 +15,11 @@ public class NoteQueueConsumerServiceLayer {
 
     public void createNote(Note note) {
         client.createNote(note);
+        System.out.println("Note sent to client");
     }
 
     public void updateNote(Note note) {
         client.updateNote(note.getId(), note);
     }
 
-    public void deleteNote(Note note) {
-        client.deleteNote(note.getId());
-    }
 }

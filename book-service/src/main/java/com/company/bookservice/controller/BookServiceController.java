@@ -1,8 +1,8 @@
 package com.company.bookservice.controller;
 
 import com.company.bookservice.model.BookViewModel;
+import com.company.bookservice.model.Note;
 import com.company.bookservice.service.BookServiceLayer;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +11,18 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/books")
 public class BookServiceController {
 
     @Autowired
     private BookServiceLayer service;
 
-    @PostMapping
+    @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
     public BookViewModel postBook(@RequestBody @Valid BookViewModel book) {
         return service.createBook(book);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/books/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookViewModel getBook(@PathVariable int id) {
         BookViewModel book = service.getBook(id);
@@ -31,7 +30,7 @@ public class BookServiceController {
         return book;
     }
 
-    @GetMapping
+    @GetMapping("/books")
     @ResponseStatus(HttpStatus.OK)
     public List<BookViewModel> getAllBooks() {
         List<BookViewModel> books = service.getAllBooks();
@@ -39,7 +38,7 @@ public class BookServiceController {
         return books;
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateBook(@PathVariable int id, @RequestBody @Valid BookViewModel book) {
         if (book.getId() == 0) book.setId(id);
@@ -47,9 +46,17 @@ public class BookServiceController {
         service.updateBook(book);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable int id) {
         service.deleteBook(id);
+    }
+
+    // *****NOTES API*****
+
+    @PostMapping("/note")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createNote(@RequestBody Note note) {
+        return service.createNote(note);
     }
 }

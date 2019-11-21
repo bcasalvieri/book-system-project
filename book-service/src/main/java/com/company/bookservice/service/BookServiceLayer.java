@@ -8,9 +8,10 @@ import com.company.bookservice.util.feign.NoteClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,13 +23,13 @@ public class BookServiceLayer {
 
     private BookRepository bookRepo;
     private NoteClient client;
-//    private RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    public BookServiceLayer(BookRepository bookRepo, NoteClient client) {
+    public BookServiceLayer(BookRepository bookRepo, NoteClient client, RabbitTemplate rabbitTemplate) {
         this.bookRepo = bookRepo;
         this.client = client;
-//        this.rabbitTemplate = rabbitTemplate;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public BookViewModel createBook(BookViewModel bvm) {
@@ -88,8 +89,12 @@ public class BookServiceLayer {
 
     // ** USE RABBITMQ TO...
     // create Note
+    public String createNote(Note note) {
+        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, note);
+
+        return "Note Created";
+    }
     // update Note
-    // delete Note
 
     private BookViewModel buildBookViewModel(Book book) {
         BookViewModel bvm = new BookViewModel();
